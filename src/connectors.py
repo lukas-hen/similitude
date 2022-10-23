@@ -1,4 +1,5 @@
 from google.cloud import bigquery
+from models.table import Column
 
 source_prefixes = (
     "bq://",
@@ -43,9 +44,7 @@ class BqTable(Table):
 
     def get_schema(self):
         """
-        Returns table schema.
-
-        Return should be a list of column info: {name: _, column_type: _, is_nullable: _}
+        Returns table schema as a list of pydantic Column models.
         """
 
         # Construct a BigQuery client object.
@@ -55,11 +54,7 @@ class BqTable(Table):
         schema = table.schema
 
         columns = [
-            {
-                "name": column.name,
-                "field_type": column.field_type,
-                "is_nullable": column.is_nullable,
-            }
+            Column(name=column.name, column_type=column.field_type, is_nullable=column.is_nullable)
             for column in schema
         ]
 

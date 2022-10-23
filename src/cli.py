@@ -1,20 +1,12 @@
 import click
 from connectors import BqTable
-
-"""
-Need to group commands under cli to use as an entrypoint for setup.py.
-"""
-
-"""sandbox-334614.etl_raw.waifu_raw"""
-
+from comparison_engine import compare_schemas
 
 @click.command()
 @click.argument("table_1", type=click.STRING)
 @click.argument("table_2", type=click.STRING)
 def cli(table_1, table_2):
-    a = BqTable(table_1)
-    #b = BqTable(table_2)
-    print(a.get_schema())
+    compare_schemas(BqTable(table_1), BqTable(table_2))
 
 
 """
