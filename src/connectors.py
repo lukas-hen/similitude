@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from models.table import Column
+from models import Column
 
 source_prefixes = (
     "bq://",
