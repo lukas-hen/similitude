@@ -6,6 +6,7 @@ source_prefixes = (
     "psql://",
 )
 
+
 class Table:
     """
     Abstraction of a table object.
@@ -40,7 +41,9 @@ class Table:
 class BqTable(Table):
     def __init__(self, table_path):
         super().__init__(table_path)
-        self.prefix_stripped_table_path = self.table_path.lstrip("bq://") # might be worth removing prefix in Table class to not hardcode the strip.
+        self.prefix_stripped_table_path = self.table_path.lstrip(
+            "bq://"
+        )  # might be worth removing prefix in Table class to not hardcode the strip.
 
     def get_schema(self):
         """
@@ -54,7 +57,11 @@ class BqTable(Table):
         schema = table.schema
 
         columns = [
-            Column(name=column.name, column_type=column.field_type, is_nullable=column.is_nullable)
+            Column(
+                name=column.name,
+                column_type=column.field_type,
+                is_nullable=column.is_nullable,
+            )
             for column in schema
         ]
 

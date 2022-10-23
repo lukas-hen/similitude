@@ -1,9 +1,10 @@
-OKGREEN = '\033[92m'
-FAIL = '\033[91m'
-ENDC = '\033[0m'
-CHECK = '\u2713'
-CROSS = '\u2717'
+OKGREEN = "\033[92m"
+FAIL = "\033[91m"
+ENDC = "\033[0m"
+CHECK = "\u2713"
+CROSS = "\u2717"
 INDENT_SIZE = 3
+
 
 def compare_schemas(table_1, table_2):
     """
@@ -34,13 +35,16 @@ def compare_schemas(table_1, table_2):
         for c in set_to_sorted_list(intersection):
             print_ok(c, indent=True)
 
+
 def print_fail(string, indent=False):
     conditional_indent = "\t" if indent else ""
     print(f"{conditional_indent}{FAIL}{CROSS} {string}{ENDC}")
 
+
 def print_ok(string, indent=False):
     conditional_indent = "\t" if indent else ""
     print(f"{conditional_indent}{OKGREEN}{CHECK} {string}{ENDC}")
+
 
 def set_to_sorted_list(s):
     return sorted(list(s), key=lambda x: x.name)

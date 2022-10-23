@@ -2,6 +2,7 @@ import click
 from connectors import BqTable
 from comparison_engine import compare_schemas
 
+
 @click.command()
 @click.argument("table_1", type=click.STRING)
 @click.argument("table_2", type=click.STRING)
