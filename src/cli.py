@@ -1,13 +1,15 @@
 import click
-from connectors import BqTable
-from comparison_engine import compare_schemas
+import comparison
+import connectors
 
 
 @click.command()
 @click.argument("table_1", type=click.STRING)
 @click.argument("table_2", type=click.STRING)
 def cli(table_1, table_2):
-    compare_schemas(BqTable(table_1), BqTable(table_2))
+    t1 = connectors.get_table(table_1)
+    t2 = connectors.get_table(table_2)
+    comparison.schemas(t1, t2)
 
 
 """
