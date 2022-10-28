@@ -4,9 +4,7 @@ import abc
 
 class Table(abc.ABC):
     """ Abstract representation of a table """
-    @abc.abstractmethod
-    def get_schema(self):
-        ...
+    """ TODO: Require schema field and implement it as propery in Table implementations """
 
 
 class Column(pydantic.BaseModel):
