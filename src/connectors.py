@@ -8,11 +8,7 @@ source_prefixes = (
     "psql://",
 )
 
-""" Singleton ish (not enforced) """
-client = bigquery.Client()
-
-
-def get_table(table_path: str) -> models.Table:
+def get_table(table_path: str, bq_client: bigquery.Client) -> models.Table:
     """
     Fetches a table object.
 
@@ -23,7 +19,7 @@ def get_table(table_path: str) -> models.Table:
         raise ValueError(f"Invalid table prefix: `{table_path}`")
     elif table_path.startswith(source_prefixes[0]):
         table_without_prefix = table_path.lstrip(source_prefixes[0])
-        return BqTable(table_without_prefix, client)
+        return BqTable(table_without_prefix, bq_client)
 
 
 class BqTable(models.Table):
@@ -54,5 +50,3 @@ class BqTable(models.Table):
         ]
 
         return columns
-
-
