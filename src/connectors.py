@@ -1,4 +1,5 @@
-from google import cloud
+from google.cloud import bigquery
+
 import models
 
 
@@ -36,7 +37,7 @@ class BqTable(models.Table):
         """
 
         # Construct a BigQuery client object.
-        client = cloud.bigquery.Client()
+        client = bigquery.Client()
 
         table = client.get_table(self.table_path)
         schema = table.schema
