@@ -32,7 +32,7 @@ def schemas(table_1: models.Table, table_2: models.Table) -> typing.Callable:
 
         if len(table_2_unique) > 0:
             print(f"Unique columns in {table_2.table_path}")
-            for c in _set_to_sorted_list(table_1_unique):
+            for c in _set_to_sorted_list(table_2_unique):
                 _print_fail(c, indent=True)
 
         if len(intersection) > 0:
