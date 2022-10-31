@@ -1,11 +1,4 @@
-def compare_numerics_sql(table_1, table_2, indexes) -> str:
-
-    indexes = ",".join(indexes)
-    t1_set = set(table_1.schema)
-    t2_set = set(table_2.schema)
-    intersect = t1_set & t2_set
-    cols = [field.name for field in list(intersect) if field.field_type == "FLOAT"]
-
+def compare_numerics_sql(table_1, table_2, numerical_cols, indexes) -> str:
     return f"""
     WITH
 
@@ -21,21 +14,21 @@ def compare_numerics_sql(table_1, table_2, indexes) -> str:
 
     joined AS (
         SELECT
-            {",".join([f"t1.{col} AS t1_{col}" for col in cols])},
-            {",".join([f"t2.{col} AS t2_{col}" for col in cols])}
+            {",".join([f"t1.{col} AS t1_{col}" for col in numerical_cols])},
+            {",".join([f"t2.{col} AS t2_{col}" for col in numerical_cols])}
         FROM t1
-        INNER JOIN t2 USING({indexes})
+        INNER JOIN t2 USING({",".join(indexes)})
     ),
 
     diff AS (
         SELECT
-            {",".join([f"t1_{col} - t2_{col} AS {col}_diff" for col in cols])}
+            {",".join([f"t1_{col} - t2_{col} AS {col}_diff" for col in numerical_cols])}
         FROM joined
     ),
 
     avg_diff AS (
         SELECT
-            {",".join([f"AVG({col}_diff) AS {col}_avg_diff" for col in cols])}
+            {",".join([f"AVG({col}_diff) AS {col}_avg_diff" for col in numerical_cols])}
         FROM diff
     )
 

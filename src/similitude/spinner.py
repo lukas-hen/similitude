@@ -2,18 +2,7 @@ import sys
 import time
 import threading
 
-frames = [
-            "⠋",
-            "⠙",
-            "⠹",
-            "⠸",
-            "⠼",
-            "⠴",
-            "⠦",
-            "⠧",
-            "⠇",
-            "⠏"
-        ]
+frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
 
 
 class Spinner:
@@ -26,7 +15,7 @@ class Spinner:
             for cursor in frames:
                 yield cursor
 
-    def __init__(self, msg: str = "", delay: int =None):
+    def __init__(self, msg: str = "", delay: int = None):
         self.msg = msg
         self.spinner_generator = self.spinning_cursor()
         if delay and float(delay):
@@ -38,7 +27,7 @@ class Spinner:
             sys.stdout.write(out)
             sys.stdout.flush()
             time.sleep(self.delay)
-            sys.stdout.write('\b' * len(out))
+            sys.stdout.write("\b" * len(out))
             sys.stdout.flush()
 
     def __enter__(self):
@@ -48,6 +37,6 @@ class Spinner:
     def __exit__(self, exception, value, tb):
         self.busy = False
         time.sleep(self.delay)
-        sys.stdout.write('\n')
+        sys.stdout.write("\n")
         if exception is not None:
             return False
