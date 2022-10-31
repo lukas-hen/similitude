@@ -36,7 +36,7 @@ def schemas(table_1: models.Table, table_2: models.Table) -> typing.Callable:
                 _print_fail(c, indent=True)
 
         if len(intersection) > 0:
-            print(f"Columns in both tables: {intersection}")
+            print(f"Columns in both tables: ")
             for c in _set_to_sorted_list(intersection):
                 _print_ok(c, indent=True)
 
