@@ -1,6 +1,5 @@
 from google.cloud import bigquery
-
-import models
+from src.similitude import models
 
 
 source_prefixes = (
@@ -8,7 +7,11 @@ source_prefixes = (
     "psql://",
 )
 
-def get_table(table_path: str, bq_client: bigquery.Client) -> models.Table:
+""" Singleton Client """
+bq_client = bigquery.Client()
+
+
+def get_table(table_path: str) -> models.Table:
     """
     Fetches a table object.
 
@@ -19,34 +22,35 @@ def get_table(table_path: str, bq_client: bigquery.Client) -> models.Table:
         raise ValueError(f"Invalid table prefix: `{table_path}`")
     elif table_path.startswith(source_prefixes[0]):
         table_without_prefix = table_path.lstrip(source_prefixes[0])
-        return BqTable(table_without_prefix, bq_client)
+        return BqTable(table_without_prefix)
 
 
 class BqTable(models.Table):
 
-    def __init__(self, table_path: str, bq_client: bigquery.Client):
+    def __init__(self, table_path: str):
         self.table_path = table_path
-        self._bq_client = bq_client
         self.schema = self._get_schema()
 
     def __repr__(self):
-        return f"table:'{self.table_path}'"
+        return self.table_path
 
     def _get_schema(self):
         """
-        Returns table schema as a list of pydantic Column models.
+        Returns table schema as a list of pydantic Field models.
         """
 
-        table = self._bq_client.get_table(self.table_path)
+        table = bq_client.get_table(self.table_path)
         schema = table.schema
 
-        columns = [
-            models.Column(
-                name=column.name,
-                column_type=column.field_type,
-                is_nullable=column.is_nullable,
+        fields = [
+            models.Field(
+                name=field.name,
+                field_type=field.field_type,
+                is_nullable=field.is_nullable,
             )
-            for column in schema
+            for field in schema
         ]
 
-        return columns
+        return fields
+
+
