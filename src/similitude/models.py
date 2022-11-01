@@ -1,7 +1,6 @@
 from pydantic import dataclasses
 
 import pydantic
-import abc
 
 
 class Field(pydantic.BaseModel):

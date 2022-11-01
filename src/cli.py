@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from src.similitude import compare, connectors, format, spinner, parse
+from src.similitude import compare, format, spinner, parse
 
 import click
 
